@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS satona (
 	kode_aset VARCHAR(20) PRIMARY KEY,
 	nama_aset VARCHAR(100),
 	tanggal_perolehan TIMESTAMP,
-	harga_perolehan BIGINT
+	harga_perolehan BIGINT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 INSERT INTO satona (kode_aset, nama_aset, tanggal_perolehan, harga_perolehan) VALUES
