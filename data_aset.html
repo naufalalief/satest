@@ -17,6 +17,13 @@
       <a href="data_aset.html" class="text-blue-600 hover:underline font-medium">Lihat Data</a>
     </nav>
     <h2 class="text-2xl font-bold text-center mb-6">Data Aset PT SATONA</h2>
+    <div class="mb-4 flex flex-col md:flex-row md:justify-between md:items-center gap-2">
+      <a href="src/pages/download_excel.php"
+        class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-semibold transition"
+        target="_blank">Download Excel</a>
+      <input type="text" id="searchInput" placeholder="Cari nama aset..."
+        class="border px-3 py-2 rounded w-64 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+    </div>
     <div class="overflow-x-auto">
       <table id="aset-table" class="min-w-full border border-gray-200 rounded-lg">
         <thead>
@@ -32,6 +39,7 @@
         </tbody>
       </table>
     </div>
+    <div id="pagination" class="flex justify-center items-center mt-6 space-x-2"></div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.6.1/toastify.min.js"></script>
   <script src="assets/js/toast.js"></script>
