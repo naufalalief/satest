@@ -4,6 +4,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 require_once '../../config/koneksi.php';
+
 try {
 	if (
 		isset($_POST['kode_aset']) &&
@@ -15,6 +16,11 @@ try {
 		$nama_aset = $conn->real_escape_string($_POST['nama_aset']);
 		$tanggal_perolehan = $conn->real_escape_string($_POST['tanggal_perolehan']);
 		$harga_perolehan = intval($_POST['harga_perolehan']);
+		// Validasi pola kode aset
+		if (!preg_match('/^(K1|K2|MP|INV)-\\d{4}$/', $kode_aset)) {
+			header('Location: ../../index.html?error=Format+kode+aset+tidak+valid');
+			exit;
+		}
 		$tanggal_perolehan = date('Y-m-d H:i:s', strtotime($tanggal_perolehan));
 		$stmt = $conn->prepare("INSERT INTO satona (kode_aset, nama_aset, tanggal_perolehan, harga_perolehan) VALUES (?, ?, ?, ?)");
 		$stmt->bind_param("sssi", $kode_aset, $nama_aset, $tanggal_perolehan, $harga_perolehan);

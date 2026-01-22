@@ -102,14 +102,34 @@ function loadAset() {
 document.addEventListener("DOMContentLoaded", function () {
   loadAset();
   const searchInput = document.getElementById("searchInput");
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      const keyword = this.value.trim().toLowerCase();
-      filteredAsetData = allAsetData.filter(row =>
-        row.nama_aset.toLowerCase().includes(keyword),
-      );
-      currentPage = 1;
-      renderAsetTable(filteredAsetData);
+  const filterKategori = document.getElementById("filterKategori");
+
+  function applyFilters() {
+    const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    const kategori = filterKategori ? filterKategori.value : "";
+    filteredAsetData = allAsetData.filter(row => {
+      // Filter kategori
+      let kategoriMatch = true;
+      if (kategori === "K") {
+        kategoriMatch =
+          row.kode_aset.startsWith("K1-") || row.kode_aset.startsWith("K2-");
+      } else if (kategori === "MP") {
+        kategoriMatch = row.kode_aset.startsWith("MP-");
+      } else if (kategori === "INV") {
+        kategoriMatch = row.kode_aset.startsWith("INV-");
+      }
+      // Filter nama
+      let namaMatch = row.nama_aset.toLowerCase().includes(keyword);
+      return kategoriMatch && namaMatch;
     });
+    currentPage = 1;
+    renderAsetTable(filteredAsetData);
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+  }
+  if (filterKategori) {
+    filterKategori.addEventListener("change", applyFilters);
   }
 });
