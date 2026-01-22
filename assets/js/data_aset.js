@@ -3,19 +3,14 @@ let allAsetData = [];
 let filteredAsetData = [];
 let currentPage = 1;
 
-function formatRupiah(angka) {
-  return "Rp " + Number(angka).toLocaleString("id-ID");
-}
-
 function renderAsetTable(data) {
   const tbody = document.querySelector("#aset-table tbody");
   tbody.innerHTML = "";
   if (data.length === 0) {
     tbody.innerHTML = '<tr><td colspan="5">Belum ada data aset.</td></tr>';
-    renderPagination(0);
+    renderPagination(0, pageSize, currentPage, onPageChange);
     return;
   }
-  // Pagination logic
   const startIdx = (currentPage - 1) * pageSize;
   const endIdx = startIdx + pageSize;
   const pageData = data.slice(startIdx, endIdx);
@@ -33,54 +28,12 @@ function renderAsetTable(data) {
     `;
     tbody.appendChild(tr);
   });
-  renderPagination(data.length);
+  renderPagination(data.length, pageSize, currentPage, onPageChange);
 }
 
-function renderPagination(totalItems) {
-  const pagination = document.getElementById("pagination");
-  if (!pagination) return;
-  pagination.innerHTML = "";
-  const totalPages = Math.ceil(totalItems / pageSize);
-  if (totalPages <= 1) return;
-
-  // Prev button
-  const prevBtn = document.createElement("button");
-  prevBtn.textContent = "<";
-  prevBtn.className = "px-3 py-1 rounded border bg-gray-200 hover:bg-gray-300";
-  prevBtn.disabled = currentPage === 1;
-  prevBtn.onclick = function () {
-    if (currentPage > 1) {
-      currentPage--;
-      renderAsetTable(filteredAsetData);
-    }
-  };
-  pagination.appendChild(prevBtn);
-
-  // Page numbers
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = i;
-    btn.className = `px-3 py-1 rounded border ${i === currentPage ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300"}`;
-    btn.disabled = i === currentPage;
-    btn.onclick = function () {
-      currentPage = i;
-      renderAsetTable(filteredAsetData);
-    };
-    pagination.appendChild(btn);
-  }
-
-  // Next button
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = ">";
-  nextBtn.className = "px-3 py-1 rounded border bg-gray-200 hover:bg-gray-300";
-  nextBtn.disabled = currentPage === totalPages;
-  nextBtn.onclick = function () {
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderAsetTable(filteredAsetData);
-    }
-  };
-  pagination.appendChild(nextBtn);
+function onPageChange(page) {
+  currentPage = page;
+  renderAsetTable(filteredAsetData);
 }
 
 function loadAset() {
@@ -108,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
     const kategori = filterKategori ? filterKategori.value : "";
     filteredAsetData = allAsetData.filter(row => {
-      // Filter kategori
       let kategoriMatch = true;
       if (kategori === "K") {
         kategoriMatch =
@@ -118,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (kategori === "INV") {
         kategoriMatch = row.kode_aset.startsWith("INV-");
       }
-      // Filter nama
       let namaMatch = row.nama_aset.toLowerCase().includes(keyword);
       return kategoriMatch && namaMatch;
     });

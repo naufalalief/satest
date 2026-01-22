@@ -16,7 +16,6 @@ try {
 		$nama_aset = $conn->real_escape_string($_POST['nama_aset']);
 		$tanggal_perolehan = $conn->real_escape_string($_POST['tanggal_perolehan']);
 		$harga_perolehan = intval($_POST['harga_perolehan']);
-		// Validasi pola kode aset
 		if (!preg_match('/^(K1|K2|MP|INV)-\\d{4}$/', $kode_aset)) {
 			header('Location: ../../index.html?error=Format+kode+aset+tidak+valid');
 			exit;
