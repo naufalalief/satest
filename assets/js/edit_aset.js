@@ -8,7 +8,7 @@ if (!kode_aset) {
   showToast("Kode aset tidak ditemukan", "error");
   document.getElementById("editForm").style.display = "none";
 } else {
-  fetch("src/pages/data_aset.php")
+  fetch("src/actions/data_aset.php")
     .then(res => res.json())
     .then(data => {
       const aset = data.find(a => a.kode_aset === kode_aset);

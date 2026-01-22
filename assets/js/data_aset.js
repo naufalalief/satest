@@ -28,7 +28,7 @@ function renderAsetTable(data) {
       <td class="py-2 px-4">${formatRupiah(row.harga_perolehan)}</td>
       <td class="py-2 px-4">
         <a href="edit_aset.html?kode_aset=${encodeURIComponent(row.kode_aset)}" class="inline-block bg-yellow-400 text-gray-900 px-3 py-1 rounded mr-2 hover:bg-yellow-300 font-semibold">Edit</a>
-        <a href="src/pages/hapus_aset.php?kode_aset=${encodeURIComponent(row.kode_aset)}" class="inline-block bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500 font-semibold" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+        <a href="src/actions/hapus_aset.php?kode_aset=${encodeURIComponent(row.kode_aset)}" class="inline-block bg-red-600 text-white px-3 py-1 rounded hover:bg-red-500 font-semibold" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
       </td>
     `;
     tbody.appendChild(tr);
@@ -84,7 +84,7 @@ function renderPagination(totalItems) {
 }
 
 function loadAset() {
-  fetch("src/pages/data_aset.php")
+  fetch("src/actions/data_aset.php")
     .then(response => response.json())
     .then(data => {
       allAsetData = data;
